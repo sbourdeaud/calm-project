@@ -14,22 +14,14 @@ api_server = "@@{pc_ip}@@"
 rand_num = "@@{calm_unique}@@"
 ahv_network_uuid = "@@{ahv_network_uuid}@@"
 project_vlan_id = "@@{project_vlan_id}@@"
-calm_user_uuid = "@@{calm_user_uuid}@@"
-calm_user_upn = "@@{calm_username}@@"
-ad_group_name = "@@{ad_group_name}@@"
-ad_group_uuid = "@@{ad_group_uuid}@@"
 project_size = "@@{project_size}@@"
 environment_uuid = "@@{environment_uuid}@@"
-project_admin_role_uuid = "@@{project_admin_role_uuid}@@"
-developer_role_uuid = "@@{developer_role_uuid}@@"
-consumer_role_uuid = "@@{consumer_role_uuid}@@"
 #input from user
 user_project_name = "@@{user_project_name}@@"
 #endregion
 
 #region define variables
 project_name = "{0}_VPC{1}_{2}".format(user_project_name,project_vlan_id,rand_num)
-#TODO check var .eg. POC2_VPC65_09131
 max_vcpu = 4
 max_memory = 16*1073741824
 max_storage = 200*1073741824
@@ -93,20 +85,8 @@ payload = {
                   }
                ]
             },
-            "user_reference_list":[
-               {
-                  "kind":"user",
-                  "uuid":calm_user_uuid,
-                  "name":calm_user_upn
-               }
-            ],
-            "external_user_group_reference_list":[
-               {
-                  "kind":"user_group",
-                  "uuid":ad_group_uuid,
-                  "name":ad_group_name
-               }
-            ],
+            "user_reference_list":[],
+            "external_user_group_reference_list":[],
             "environment_reference_list": [
                {
                   "kind": "environment",
@@ -115,57 +95,9 @@ payload = {
             ],
          }
       },
-      "access_control_policy_list":[
-         {
-            "operation":"ADD",
-            "metadata":{
-               "kind":"access_control_policy"
-            },
-            "acp":{
-               "name":"prismui-name-428e618abe71",
-               "description":"prismui-desc-ad5dd335dd14",
-               "resources":{
-                  "role_reference":{
-                     "kind":"role",
-                     "name":"Project Admin",
-                     "uuid":project_admin_role_uuid
-                  },
-                  "user_reference_list":[
-                     {
-                        "kind":"user",
-                        "uuid":calm_user_uuid,
-                        "name":calm_user_upn
-                     }
-                  ] 
-               }
-            }
-         },
-         {
-            "operation":"ADD",
-            "metadata":{
-               "kind":"access_control_policy"
-            },
-            "acp":{
-               "name":"prismui-name-22b4b5a2b5fd",
-               "description":"prismui-desc-225d2f0c16d5",
-               "resources":{
-                  "role_reference":{
-                     "kind":"role",
-                     "name":"Developer",
-                     "uuid":developer_role_uuid
-                  },
-                  "user_group_reference_list":[
-                     {
-                        "kind":"user_group",
-                        "uuid":ad_group_uuid,
-                        "name":ad_group_name
-                     }
-                  ]
-                                
-               }
-            }
-         }
-      ]
+      "user_list": [],
+      "user_group_list": [],
+      "access_control_policy_list": []
    }
 }
 # endregion
