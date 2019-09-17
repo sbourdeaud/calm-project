@@ -13,6 +13,7 @@
 username = '@@{pc.username}@@'
 username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
+nutanix_cluster_uuid = "@@{nutanix_cluster_uuid}@@"
 # endregion
 
 #region define variables
@@ -73,8 +74,10 @@ if resp.ok:
             vlan_match = False
             for ahv_vlans in json.loads(resp.content)['entities']:
                 if valid_vlan == int(ahv_vlans['spec']['resources']['vlan_id']):
-                    #this vlan id is valid and does not exist yet in AHV
-                    vlan_match = True
+                    #TODO add code here to check the cluster reference
+                    if nutanix_cluster_uuid == ahv_vlans['spec']['cluster_reference']['uuid']:
+                        #this vlan is already defined on the AHV cluster
+                        vlan_match = True
             if vlan_match is False:
                 #we have already found a valid and available vlan, so break out 
                 # of the loop
@@ -84,7 +87,7 @@ if resp.ok:
                 #we have already found a valid and available vlan, so break out 
                 # of the loop
                 break
-    if project_vlan_id is None:
+    if project_vlan_id == "":
         #we couldn't find an available vlan id
         print("There is no vlan id available on this cluster.")
         exit(1)
