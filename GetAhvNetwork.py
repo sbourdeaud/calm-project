@@ -6,6 +6,7 @@
 # description:  Given multiple ranges of VLAN ids and a target AHV cluster, 
 #               determine which one is available (not existing already on the 
 #               AHV cluster) which has the lowest id.
+# output vars:  project_vlan_id
 # endregion
 
 #region capture Calm variables
@@ -17,9 +18,7 @@ api_server = "@@{pc_ip}@@"
 #region define variables
 #* define here which vlan ranges are valid
 vlan_ranges = [
-    range(10,21),
-    range(30,41),
-    range(50,61)
+    range(10,110)
 ]
 project_vlan_id = ""
 #endregion
