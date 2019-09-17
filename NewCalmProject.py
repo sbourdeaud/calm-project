@@ -4,7 +4,7 @@
 # * version:    2019/09/17
 # task_name:    NewCalmProject
 # description:  Create a new project in different sizes: small, medium, large, configured with an unique VlanID, with project owner having the "Project Admin role".
-# output: Subnet_UUID, VlanID, Project_Name, Project_UUID
+# output: ahv_network_uuid, VlanID, User Name, Group Name, project_name, project_uuid
 # endregion
 
 #region capture Calm variables
@@ -14,11 +14,11 @@ username_secret = "@@{pc.secret}@@"
 rand_num = "@@{calm_unique}@@"
 ahv_network_uuid = "@@{ahv_network_uuid}@@"
 project_name = "user_project_name"+"_VPC"+"project_vlan_id"+"_"+"rand_num"
-#eg. POC2_VPC65_09131
+#TODO check var .eg. POC2_VPC65_09131
 
 project_vlan_id = "@@{project_vlan_id}@@"
 calm_user_uuid = "@@{calm_user_uuid}@@"
-calm_user_upn = "@@{calm_user_name}@@"
+calm_user_upn = "@@{calm_username}@@"
 ad_group_name = "@@{ad_group_name}@@"
 ad_group_uuid = "@@{ad_group_uuid}@@"
 #input from user

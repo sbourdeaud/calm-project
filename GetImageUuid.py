@@ -11,7 +11,7 @@
 username = "@@{pc.username}@@"
 username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
-Image_Name = "@@{Image_Name}@@"
+image_name = "@@{image_name}@@"
 
 
 # endregion
@@ -33,7 +33,7 @@ headers = {
 
 # Compose the json payload
 payload = {
-    "filter":"name==@@{Image_Name}@@", 
+    "filter":"name==@@{image_name}@@", 
     "length": 100, "offset": 0
 }
 #TODO should we use image_name as a filter?
