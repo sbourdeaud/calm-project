@@ -90,9 +90,6 @@ else:
 
 
 
-
-
-
 #! Old code
 
 url     = "https://api_server:9440/api/nutanix/v3/marketplace_items/list"
