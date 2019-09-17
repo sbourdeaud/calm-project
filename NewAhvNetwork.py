@@ -4,7 +4,7 @@
 # * version:    2019/09/17
 # task_name:    NewAhvNetwork
 # description:  Given a vlan id, create an ipam managed network in AHV.
-# output vars:  ahv_network_uuid
+# output vars:  ahv_network_uuid, ahv_network_name
 # endregion
 
 #region capture Calm variables
@@ -71,6 +71,7 @@ if resp.ok:
     print("AHV network was successfully created.")
     json_resp = json.loads(resp.content)
     print("ahv_network_uuid={}".format(json_resp['networkUuid']))
+    print("ahv_network_name={}".format(ahv_network_name))
     exit(0)
 else:
     #api call failed

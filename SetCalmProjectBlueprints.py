@@ -4,7 +4,7 @@
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
 # * version:    2019/09/17
 # task_name:    SetCalmProjectBlueprints
-# description:  Publish existing CALM Blueprints on the new project created. Blueprints will be added into a list. The list will be populated by Nutanix Admins and stored on a CALM macro.
+# description:  Publish existing CALM Blueprints on the new project created. Blueprints will be added into a list, which will be populated by Nutanix Admins and stored on a CALM macro.
 # endregion
 
 #region capture Calm variables
@@ -53,10 +53,7 @@ resp = urlreq(
 # endregion
 
 #region process the results
-print("Making a {} API call to {}".format(method, url))
-
 myresp = json.loads(resp.content)
-
 if resp.ok:
   for i in myresp['entities']:
     print i['metadata']['uuid']
@@ -86,9 +83,6 @@ else:
   print "Get MP Items list failed", json.dumps(json.loads(resp.content), indent=4)
   exit(1)
 # endregion
-
-
-
 
 #! Old code
 
