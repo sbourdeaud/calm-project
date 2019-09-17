@@ -1,3 +1,51 @@
+
+#region headers
+# escript-template v20190611 / stephane.bourdeaud@nutanix.com
+# * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
+# * version:    2019/09/17
+# task_name:    SetCalmProjectEnvironment
+# description:  Set up the enviroment configuration for Calm Project. Environment is mandatory to publish the applications into the marketplace. In case while creating a blueprint the VM configuration is not defined then the configuration needs to be defined as part of environment. Also, during the application blueprint launch from marketplace the values are picked from environment. Only one environment per project is applicable in case of different marketplace application blueprints have different VM requirements.
+
+# endregion
+
+#region capture Calm variables
+"@@{PC_IP}@@"
+"@@{Project_UUID}@@"
+"@@{Project_Name}@@"
+"@@{envuuid}@@"
+"@@{VlanID}@@"
+"@@{Subnet_UUID}@@"
+pc_user = '@@{Prism_Central.username}@@'
+pc_pass = '@@{Prism_Central.secret}@@'
+
+# endregion
+
+#region prepare api call
+
+# endregion
+
+#region make the api call
+
+# endregion
+
+
+#region process the results
+
+# endregion
+
+
+
+
+
+
+
+
+
+
+
+
+#!Old Script
+
 url     = "https://@@{PC_IP}@@:9440/api/nutanix/v3/projects_internal/@@{Project_UUID}@@"
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
 

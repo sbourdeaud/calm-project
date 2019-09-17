@@ -12,7 +12,7 @@ username = "@@{pc.username}@@"
 username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
 project_name = "@@{Project_Name}@@"
-project_uuid = "@@{Project1_UUID}@@"
+project_uuid = "@@{Project_UUID}@@"
 # endregion
 
 #region prepare api call
