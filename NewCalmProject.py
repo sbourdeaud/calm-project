@@ -4,30 +4,44 @@
 # * version:    2019/09/17
 # task_name:    NewCalmProject
 # description:  Create a new project in different sizes: small, medium, large, configured with an unique VlanID, with project owner having the "Project Admin role".
-# output: ahv_network_uuid, VlanID, User Name, Group Name, project_name, project_uuid
+# output vars:  project_name, project_uuid
 # endregion
 
 #region capture Calm variables
-
 username = "@@{pc.username}@@"
 username_secret = "@@{pc.secret}@@"
 rand_num = "@@{calm_unique}@@"
 ahv_network_uuid = "@@{ahv_network_uuid}@@"
-project_name = "user_project_name"+"_VPC"+"project_vlan_id"+"_"+"rand_num"
-#TODO check var .eg. POC2_VPC65_09131
-
 project_vlan_id = "@@{project_vlan_id}@@"
 calm_user_uuid = "@@{calm_user_uuid}@@"
 calm_user_upn = "@@{calm_username}@@"
 ad_group_name = "@@{ad_group_name}@@"
 ad_group_uuid = "@@{ad_group_uuid}@@"
+project_size = "@@{project_size}@@"
+environment_uuid = "@@{environment_uuid}@@"
+project_admin_role_uuid = "@@{project_admin_role_uuid}@@"
+developer_role_uuid = "@@{developer_role_uuid}@@"
+consumer_role_uuid = "@@{consumer_role_uuid}@@"
 #input from user
 user_project_name = "@@{user_project_name}@@"
+#endregion
 
-p_vcpu = 4
-p_storage = 214748364800
-p_mem = 17179869184
-
+#region define variables
+project_name = "{0}_VPC{1}_{2}".format(user_project_name,project_vlan_id,rand_num)
+#TODO check var .eg. POC2_VPC65_09131
+max_vcpu = 4
+max_memory = 16*1073741824
+max_storage = 200*1073741824
+medium_multiplier = 2
+large_multiplier = 4
+if project_size == "medium":
+   max_vcpu = max_vcpu*medium_multiplier
+   max_mem = max_mem*medium_multiplier
+   max_storage = max_storage*medium_multiplier   
+if project_size == "large":
+   max_vcpu = max_vcpu*large_multiplier
+   max_mem = max_mem*large_multiplier
+   max_storage = max_storage*large_multiplier 
 # endregion
 
 #region prepare api call
@@ -53,27 +67,27 @@ payload = {
    },
    "spec":{
       "project_detail":{
-         "name":"project_name",
-         "description":"User VPC Project Small size: \n4 vCPUs \n16 GB RAM \n200 GB Storage",
+         "name":project_name,
+         "description":"Created for {}".format(calm_user_upn),
          "resources":{
             "subnet_reference_list":[
                {
                   "kind":"subnet",
-                  "uuid":"ahv_network_uuid"
+                  "uuid":ahv_network_uuid
                }
             ],
             "resource_domain":{
                "resources":[
                   {
-                     "limit":"p_vcpu",
+                     "limit":max_vcpu,
                      "resource_type":"VCPUS"
                   },
                   {
-                     "limit":"p_storage",
+                     "limit":max_storage,
                      "resource_type":"STORAGE"
                   },
                   {
-                     "limit":"p_mem",
+                     "limit":max_memory,
                      "resource_type":"MEMORY"
                   }
                ]
@@ -81,17 +95,23 @@ payload = {
             "user_reference_list":[
                {
                   "kind":"user",
-                  "uuid":"calm_user_uuid",
-                  "name":"calm_user_upn"
+                  "uuid":calm_user_uuid,
+                  "name":calm_user_upn
                }
             ],
             "external_user_group_reference_list":[
                {
                   "kind":"user_group",
-                  "uuid":"ad_group_uuid,
-                  "name":"ad_group_name"
+                  "uuid":ad_group_uuid,
+                  "name":ad_group_name
                }
-            ]
+            ],
+            "environment_reference_list": [
+               {
+                  "kind": "environment",
+                  "uuid": environment_uuid
+               }
+            ],
          }
       },
       "access_control_policy_list":[
@@ -107,13 +127,13 @@ payload = {
                   "role_reference":{
                      "kind":"role",
                      "name":"Project Admin",
-                     "uuid":"75488899-853f-4a88-a9a5-20f388d141de"
+                     "uuid":project_admin_role_uuid
                   },
                   "user_reference_list":[
                      {
                         "kind":"user",
-                        "uuid":"calm_user_uuid",
-                        "name":"calm_user_upn"
+                        "uuid":calm_user_uuid,
+                        "name":calm_user_upn
                      }
                   ] 
                }
@@ -131,13 +151,13 @@ payload = {
                   "role_reference":{
                      "kind":"role",
                      "name":"Developer",
-                     "uuid":"2676bf44-45b2-4a85-806c-948296665c0b"
+                     "uuid":developer_role_uuid
                   },
                   "user_group_reference_list":[
                      {
                         "kind":"user_group",
-                        "uuid":"ad_group_uuid",
-                        "name":"ad_group_name
+                        "uuid":ad_group_uuid,
+                        "name":ad_group_name
                      }
                   ]
                                 
@@ -163,22 +183,25 @@ resp = urlreq(
 )
 # endregion
 
-
 #region process the results
 if resp.ok:
-       print json.dumps(json.loads(resp.content), indent=4)
+   print json.dumps(json.loads(resp.content), indent=4)
    print "######Project details######"
-   print "ahv_network_uuid=" , "@@{ahv_network_uuid}@@"
-   print "VlanID=" , "@@{project_vlan_id}@@"
-   print "User Name= " , "calm_user_upn"
-   print "Group Name=" , "ad_group_name"
+   print "Vlan ID for this project is {}".format(project_vlan_id)
+   print "User Name for this project is {}".format(calm_user_upn)
+   print "Group Name for this project is {}".format(ad_group_name)
    
    print "project_name={0}".format(json.loads(resp.content)['spec']['project_detail']['name'])
    print "project_uuid={0}".format(json.loads(resp.content)['metadata']['uuid'])
 
    exit(0)
 else:
-    print "Post request failed", resp.content
+    #api call failed
+    print("Request failed")
+    print("Headers: {}".format(headers))
+    print("Payload: {}".format(json.dumps(payload)))
+    print('Status code: {}'.format(resp.status_code))
+    print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
     exit(1)
 # endregion
 

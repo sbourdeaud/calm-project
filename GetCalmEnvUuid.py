@@ -2,9 +2,9 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     stephane.bourdeaud@nutanix.com
 # * version:    2019/09/17
-# task_name:    GetCalmEnv
+# task_name:    GetCalmEnvUuid
 # description:  Get existing project environments from Calm.
-# output vars:  environment_uuids
+# output vars:  environment_uuid
 # endregion
 
 #region capture Calm variables
@@ -59,7 +59,7 @@ if resp.ok:
     json_resp = json.loads(resp.content)
     for environment in json_resp['entities']:
         environment_uuids.append(environment['metadata']['uuid'])
-    print("environment_uuids={}".format(environment_uuids))
+    print("environment_uuid={}".format(environment_uuids[0]))
     exit(0)
 else:
     # print the content of the response (which should have the error message)
