@@ -1,4 +1,4 @@
-# Set the credentials for Prism
+# Set the credentials for Prism *
 pc_user = '@@{Prism_Central.username}@@'
 pc_pass = '@@{Prism_Central.secret}@@'
 
