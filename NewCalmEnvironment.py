@@ -1,12 +1,175 @@
+# region headers
+# escript-template v20190611 / stephane.bourdeaud@nutanix.com
+# * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
+# * version:    2019/09/17
+# task_name:    NewCalmEnvironment
+# description:  Create enviroment configuration for Calm. Environment is mandatory to publish the applications into the marketplace. In case while creating a blueprint the VM configuration is not defined then the configuration needs to be defined as part of environment. Also, during the application blueprint launch from marketplace the values are picked from environment. Only one environment per project is applicable in case of different marketplace application blueprints have different VM requirements.
+# output vars:  nameuuid, envuuid (environment name and environment uuid)
+# endregion
+
+#region capture Calm variables
+username = "@@{pc.username}@@"
+username_secret = "@@{pc.secret}@@"
+api_server = "@@{pc_ip}@@"
+project_name= "@{Project_Name}@"
+my_var1="@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@"
+ahv_network_uuid = "@@{ahv_network_uuid}@@"
+image_name = "@@{Image_Name}@@“
+image_uuid = "@@{image_uuid}@@"
+vm_name = "vml-@" + project_name + "@"+"rand_num"
+#TODO to be check if var (vm_name) is correct
+os_user= "@@{local.username}@@"
+os_secret= "@@{local.secret}@@"
+
+
+#TODO where should these two vars be placed? in this script of in GetImageUuid ?
+envuuid = str(uuid.uuid4())
+nameuuid = str(uuid.uuid4())
+
+# endregion
+
+#region prepare api call
+api_server_port = "9440"
+api_server_endpoint = "/api/nutanix/v3/environments"
+length = 100
+url = "https://{}:{}{}".format(
+    api_server,
+    api_server_port,
+    api_server_endpoint
+)
+method = "POST"
+headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+}
+
+# Compose the json payload
+payload = {
+  "spec": {
+    "name": nameuuid,
+    "resources": {
+      "substrate_definition_list": [
+        {
+          "uuid": str(uuid.uuid4()),
+          "action_list": [],
+          "readiness_probe": {
+            "connection_type": "SSH",
+            "address": "@" + my_var1 + "@",
+            "disable_readiness_probe": True,
+            "connection_port": 22,
+            "retries": "5",
+            "login_credential_local_reference": {
+              "kind": "app_credential",
+              "uuid": nameuuid
+            }
+          },
+          "editables": {
+            "create_spec": {
+              "resources": {
+                "nic_list": {},
+                "serial_port_list": {}
+              }
+            }
+          },
+          "os_type": "Linux",
+          "type": "AHV_VM",
+          "create_spec": {
+            "resources": {
+              "nic_list": [
+                {
+                  "subnet_reference": {
+                    "uuid": "ahv_network_uuid"
+                  },
+                  "ip_endpoint_list": []
+                }
+              ],
+              "num_vcpus_per_socket": 1,
+              "num_sockets": 2,
+              "memory_size_mib": 4096,
+              "boot_config": {
+                "boot_device": {
+                  "disk_address": {
+                    "device_index": 0,
+                    "adapter_type": "SCSI"
+                  }
+                }
+              },
+              "disk_list": [
+                {
+                  "data_source_reference": {
+                    "kind": "image",
+                    "name": "@@{image_name}@@",
+                    "uuid": "image_uuid"
+                  },
+                  "device_properties": {
+                    "disk_address": {
+                      "device_index": 0,
+                      "adapter_type": "SCSI"
+                    },
+                    "device_type": "DISK"
+                  }
+                }
+              ]
+            },
+            "name": "vm_name",
+            "categories": {}
+          },
+          "variable_list": [],
+          "name": "Untitled"
+        }
+      ],
+      "credential_definition_list": [
+        {
+          "name": "root",
+          "type": "PASSWORD",
+          "username": "os_user",
+          "secret": {
+            "attrs": {
+              "is_secret_modified": "true"
+            },
+            "value": "os_secret"
+          },
+          "uuid": nameuuid
+        }
+      ]
+    }
+  },
+  "api_version": "3.0",
+  "metadata": {
+    "kind": "environment",
+    "uuid": envuuid
+  }
+}
+# endregion
+
+#region make the api call
+resp = urlreq(url, verb='POST', auth='BASIC', user=username, passwd=username_secret, params=json.dumps(payload), headers=headers)
+# endregion
+
+#region process the results
+if resp.ok:
+  print json.dumps(json.loads(resp.content), indent=4)
+  print "envuuid={0}".format(json.loads(resp.content)['metadata']['uuid'])
+  print "nameuuid={0}".format(json.loads(resp.content)['metadata']['name'])
+else:
+  print "Post create environment failed", json.dumps(json.loads(resp.content), indent=4)
+  exit(1)
+# endregion
+
+
+
+
+#! Old Script moved to GetImageUuid.py
+#region Old Script was  moved to GetImageUuid.py
 url     = "https://@@{PC_IP}@@:9440/api/nutanix/v3/images/list"
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
 
-payload = {"filter":"name==@@{Image_Name}@@", "length": 100, "offset": 0,}
+payload = {"filter":"name==@@{Image_Name}@@", "length": 100, "offset": 0}
 
-pc_user =  '@@{Prism_Central.username}@@'
-pc_pass = '@@{Prism_Central.secret}@@'
+username =  '@@{pc.username}@@'
+username_secret = '@@{pc.secret}@@'
 
-resp = urlreq(url, verb='POST', auth='BASIC', user=pc_user, passwd=pc_pass, params=json.dumps(payload), headers=headers)
+resp = urlreq(url, verb='POST', auth='BASIC', user=username, passwd=username_secret, params=json.dumps(payload), headers=headers)
 
 if resp.ok:
   print json.dumps(json.loads(resp.content), indent=4)
@@ -17,13 +180,15 @@ else:
   exit(1)
   
 print imageuuid
+# endregion 
+#! Old script
 
 url     = "https://@@{PC_IP}@@:9440/api/nutanix/v3/environments"
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
 
 envuuid = str(uuid.uuid4())
 nameuuid = str(uuid.uuid4())
-my_var= "@{Project_Name}@"
+project_name= "@{Project_Name}@"
 my_var1="@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@"
 
 
@@ -64,7 +229,7 @@ payload = {
               "nic_list": [
                 {
                   "subnet_reference": {
-                    "uuid": "@@{Subnet_UUID}@@"
+                    "uuid": "ahv_network_uuid"
                   },
                   "ip_endpoint_list": []
                 }
@@ -84,8 +249,8 @@ payload = {
                 {
                   "data_source_reference": {
                     "kind": "image",
-                    "name": "@@{Image_Name}@@",
-                    "uuid": imageuuid
+                    "name": "@@{image_name}@@",
+                    "uuid": "image_uuid"
                   },
                   "device_properties": {
                     "disk_address": {
@@ -97,7 +262,7 @@ payload = {
                 }
               ]
             },
-            "name": "vml-@" + my_var + "@"+"@@{calm_unique}@@",
+            "name": "vm_name",
             "categories": {}
           },
           "variable_list": [],
@@ -108,12 +273,12 @@ payload = {
         {
           "name": "root",
           "type": "PASSWORD",
-          "username": "@@{local.username}@@",
+          "username": "os_user",
           "secret": {
             "attrs": {
               "is_secret_modified": "true"
             },
-            "value": "@@{local.secret}@@"
+            "value": "os_secret"
           },
           "uuid": nameuuid
         }
@@ -128,11 +293,11 @@ payload = {
 }
 
 
-pc_user =  '@@{Prism_Central.username}@@'
-pc_pass = '@@{Prism_Central.secret}@@'
+username =  '@@{pc.username}@@'
+username_secret = '@@{pc.secret}@@'
 
 
-resp = urlreq(url, verb='POST', auth='BASIC', user=pc_user, passwd=pc_pass, params=json.dumps(payload), headers=headers)
+resp = urlreq(url, verb='POST', auth='BASIC', user=username, passwd=username_secret, params=json.dumps(payload), headers=headers)
 
 if resp.ok:
   print json.dumps(json.loads(resp.content), indent=4)
