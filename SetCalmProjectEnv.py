@@ -3,7 +3,7 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
 # * version:    2019/09/17
-# task_name:    SetCalmProjectEnvironment
+# task_name:    SetCalmProjectEnv
 # description:  Set up the enviroment configuration for Calm Project. Environment is mandatory to publish the applications into the marketplace. In case while creating a blueprint the VM configuration is not defined then the configuration needs to be defined as part of environment. Also, during the application blueprint launch from marketplace the values are picked from environment. Only one environment per project is applicable in case of different marketplace application blueprints have different VM requirements.
 # endregion
 

@@ -2,7 +2,7 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
 # * version:    2019/09/17
-# task_name:    SetCalmProjectBlueprints
+# task_name:    SetCalmProjectBp
 # description:  Publish existing CALM Blueprints on the new project created. 
 #               Blueprints will be added into a list, which will be populated by
 #               Nutanix Admins and stored on a CALM macro.
