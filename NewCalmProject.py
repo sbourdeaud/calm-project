@@ -120,11 +120,6 @@ resp = urlreq(
 #region process the results
 if resp.ok:
    print json.dumps(json.loads(resp.content), indent=4)
-   print "######Project details######"
-   print "Vlan ID for this project is {}".format(project_vlan_id)
-   print "User Name for this project is {}".format(calm_user_upn)
-   print "Group Name for this project is {}".format(ad_group_name)
-   
    print "project_name={0}".format(json.loads(resp.content)['spec']['project_detail']['name'])
    print "project_uuid={0}".format(json.loads(resp.content)['metadata']['uuid'])
 
