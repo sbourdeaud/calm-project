@@ -1,4 +1,4 @@
-#region headers
+# region headers
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
 # * version:    2019/09/17
@@ -22,6 +22,7 @@ developer_role_uuid = "@@{developer_role_uuid}@@"
 consumer_role_uuid = "@@{consumer_role_uuid}@@"
 project_uuid = "@@{project_uuid}@@"
 directory_uuid = "@@{directory_uuid}@@"
+nutanix_cluster_uuid = "@@{nutanix_cluster_uuid}@@"
 #endregion
 
 #region prepare api call (get project)
@@ -172,7 +173,7 @@ else:
                                             },
                                             "right_hand_side": {
                                                 "uuid_list": [
-                                                    clusteruuid
+                                                    nutanix_cluster_uuid
                                                 ]
                                             }
                                         }
@@ -302,7 +303,7 @@ else:
                                     },
                                     "right_hand_side": {
                                         "uuid_list": [
-                                            clusteruuid
+                                            nutanix_cluster_uuid
                                         ]
                                     }
                                 }
