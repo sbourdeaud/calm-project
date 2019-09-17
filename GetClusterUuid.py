@@ -1,9 +1,10 @@
 # region headers
 # escript-template v20190605 / stephane.bourdeaud@nutanix.com
 # * author:     stephane.bourdeaud@nutanix.com
-# * version:    2019/09/16
+# * version:    2019/09/17
 # task_name:    PcGetClusterUuid
 # description:  Gets the UUID of the specified cluster.
+# output vars:  nutanix_cluster_uuid
 # endregion
 
 # region capture Calm variables

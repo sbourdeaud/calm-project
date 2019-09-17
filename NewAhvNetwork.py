@@ -1,9 +1,10 @@
 #region headers
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
-# * version:    2019/09/16
+# * version:    2019/09/17
 # task_name:    NewAhvNetwork
 # description:  Given a vlan id, create an ipam managed network in AHV.
+# output vars:  ahv_network_uuid
 # endregion
 
 #region capture Calm variables

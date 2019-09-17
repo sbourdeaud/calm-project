@@ -1,10 +1,11 @@
 #region headers
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     stephane.bourdeaud@nutanix.com
-# * version:    2019/09/16
+# * version:    2019/09/17
 # task_name:    GetPcDirectoryServicesUuid
 # description:  Returns the UUID of the directory matching the domain of
 #               the Calm user.
+# output vars:  directory_uuid
 # endregion
 
 #region capture Calm variables

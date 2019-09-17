@@ -5,9 +5,8 @@
 # * version:    2019/09/17
 # task_name:    GetAdUserUuid
 # description:  Returns the Prism Central object uuid of the Calm user.
+# output vars:  calm_user_uuid
 # endregion
-
-#!this is a change
 
 #region capture Calm variables
 username = '@@{pc.username}@@'
