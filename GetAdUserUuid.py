@@ -56,7 +56,6 @@ resp = urlreq(
 if resp.ok:
     json_resp = json.loads(resp.content)
     print("Printing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['length']))
-    #TODO: see if user matches here
     for directory_user in json_resp['entities']:
         #print("Comparing {} with {}".format(nutanix_calm_user_upn,directory_user['status']['name']))
         if nutanix_calm_user_upn == directory_user['status']['name']:
