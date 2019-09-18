@@ -2,22 +2,28 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     Bogdan-Nicolae.MITU@ext.eeas.europa.eu,
 # *             stephane.bourdeaud@nutanix.com
-# * version:    2019/09/17
-# task_name:    GetAdUserUuid
-# description:  Returns the Prism Central object uuid of the Calm user.
-# output vars:  nutanix_calm_user_uuid
+# * version:    2019/09/18
+# task_name:    GetUserProjects
+# description:  Counts how many projects a user owns.
+#               Returns an error if the count is too high.
 # endregion
 
 #region capture Calm variables
 username = '@@{pc.username}@@'
 username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
-nutanix_calm_user_upn = "@@{calm_username}@@"
+nutanix_calm_user_uuid = "@@{nutanix_calm_user_uuid}@@"
+nutanix_calm_user_name = "@@{calm_username}@@"
 # endregion
+
+#region define variables
+max_project_count = 3
+user_project_count = 0
+#endregion
 
 # region prepare api call
 api_server_port = "9440"
-api_server_endpoint = "/api/nutanix/v3/users/list"
+api_server_endpoint = "/api/nutanix/v3/projects/list"
 length = 100
 url = "https://{}:{}{}".format(
     api_server,
@@ -32,7 +38,7 @@ headers = {
 
 # Compose the json payload
 payload = {
-    "kind":"user",
+    "kind":"project",
     "length":length,
     "offset":0
 }
@@ -56,14 +62,12 @@ resp = urlreq(
 if resp.ok:
     json_resp = json.loads(resp.content)
     print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['length']))
-    for directory_user in json_resp['entities']:
-        if nutanix_calm_user_upn == directory_user['status']['name']:
-            nutanix_calm_user_uuid = directory_user['metadata']['uuid']
-            print("calm_user_uuid={}".format(nutanix_calm_user_uuid))
-            exit(0)
+    for project in json_resp['entities']:
+        if nutanix_calm_user_uuid == project['metadata']['owner_reference']['uuid']:
+            user_project_count = user_project_count + 1
     while json_resp['metadata']['length'] is length:
         payload = {
-            "kind": "user",
+            "kind": "project",
             "length":length,
             "offset": json_resp['metadata']['length'] + json_resp['metadata']['offset'] + 1
         }
@@ -81,11 +85,9 @@ if resp.ok:
             json_resp = json.loads(resp.content)
             print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['offset'] + json_resp['metadata']['length']))
             #TODO: see if user matches here
-            for directory_user in json_resp['entities']:
-                if calm_user_upn == directory_user['status']['name']:
-                    calm_user_uuid = directory_user['metadata']['uuid']
-                    print("calm_user_uuid={}".format(calm_user_uuid))
-                    exit(0)
+            for project in json_resp['entities']:
+                if nutanix_calm_user_uuid == project['metadata']['owner_reference']['uuid']:
+                    user_project_count = user_project_count + 1
         else:
             print("Request failed")
             print("Headers: {}".format(headers))
@@ -93,7 +95,12 @@ if resp.ok:
             print('Status code: {}'.format(resp.status_code))
             print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
             exit(1)
-    exit(0)
+    if user_project_count >= max_project_count:
+        print("User {0} already owns {1} projects which is greater than the maximum allowed ({2})".format(nutanix_calm_user_name,user_project_count,max_project_count))
+        exit(1)
+    else:
+        print("User {0} owns {1} projects which is lower than the maximum allowed ({2})".format(nutanix_calm_user_name,user_project_count,max_project_count))
+        exit(0)
 else:
     # print the content of the response (which should have the error message)
     print("Request failed", json.dumps(
