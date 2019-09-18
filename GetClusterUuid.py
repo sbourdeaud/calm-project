@@ -12,13 +12,15 @@ username = '@@{pc.username}@@'
 username_secret = "@@{pc.secret}@@"
 project_type = "@@{project_type}@@"
 pc_ip = "@@{pc_ip}@@"
+prod_cluster_name = "@@{prod_cluster_name}@@"
+dev_cluster_name = "@@{dev_cluster_name}@@"
 # endregion
 
 # region define variables
 if project_type is "Production":
-    nutanix_cluster_name = "Lancelot"
+    nutanix_cluster_name = prod_cluster_name
 if project_type is "Dev":
-    nutanix_cluster_name = "Lancelot"
+    nutanix_cluster_name = dev_cluster_name
 # endregion
 
 # region Get AHV cluster UUID

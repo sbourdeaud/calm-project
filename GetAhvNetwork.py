@@ -17,7 +17,9 @@ nutanix_cluster_uuid = "@@{nutanix_cluster_uuid}@@"
 # endregion
 
 #region define variables
-#* define here which vlan ranges are valid
+#! define here which vlan ranges are valid (the last number is not included)
+#! for example, to include vlans 1 to 5, add a range(1,6). Multiple ranges can
+#! be specified and need to be comma separated (exp: range(1,6),range(10,16))
 vlan_ranges = [
     range(10,110)
 ]
