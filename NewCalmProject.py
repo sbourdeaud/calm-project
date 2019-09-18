@@ -30,11 +30,11 @@ medium_multiplier = 2
 large_multiplier = 4
 if project_size == "medium":
    max_vcpu = max_vcpu*medium_multiplier
-   max_mem = max_mem*medium_multiplier
+   max_memory = max_memory*medium_multiplier
    max_storage = max_storage*medium_multiplier   
 if project_size == "large":
    max_vcpu = max_vcpu*large_multiplier
-   max_mem = max_mem*large_multiplier
+   max_memory = max_memory*large_multiplier
    max_storage = max_storage*large_multiplier 
 # endregion
 
