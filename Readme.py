@@ -9,7 +9,7 @@
 
 #region capture Calm variables
 ahv_network_name = "@@{ahv_network_name}@@"
-username = "@@{pc.username}@@"
+username = "@@{calm_username}@@"
 ad_group_name = "@@{ad_group_name}@@"
 project_name = "@@{project_name}@@"
 project_size = "@@{project_size}@@"
@@ -22,5 +22,5 @@ print("   Project Size: {}".format(project_size))
 print("   Project Owner: {}".format(username))
 print("   Active Directory Group for Consumers: {}".format(ad_group_name))
 print("   Network Name: {}".format(ahv_network_name))
-print("**********************************************\n")
+print("\n**********************************************")
 #endregion
