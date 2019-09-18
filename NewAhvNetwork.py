@@ -24,7 +24,7 @@ ahv_network_gw = "10.55.{}.1".format(project_vlan_id)
 ahv_network_pool_range = "10.55.{0}.2 10.55.{0}.253".format(project_vlan_id)
 #endregion
 
-# region prepare api call
+#region prepare api call
 api_server_port = "9440"
 api_server_endpoint = "/api/nutanix/v0.8/networks?proxyClusterUuid={}".format(nutanix_cluster_uuid)
 length = 100
@@ -49,7 +49,6 @@ payload = {
     "defaultGateway":ahv_network_gw,
     "pool":[{"range":ahv_network_pool_range}]}
 }
-print(payload)
 # endregion
 
 #region make the api call
