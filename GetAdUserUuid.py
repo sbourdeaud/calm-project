@@ -85,7 +85,7 @@ if resp.ok:
             print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['offset'] + json_resp['metadata']['length']))
             #TODO: see if user matches here
             for directory_user in json_resp['entities']:
-                if calm_user_upn == directory_user['status']['name']:
+                if nutanix_calm_user_upn == directory_user['status']['name']:
                     calm_user_uuid = directory_user['metadata']['uuid']
                     directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
                     print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
