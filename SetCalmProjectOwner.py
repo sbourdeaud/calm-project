@@ -77,9 +77,10 @@ headers = {
 project_json.pop('status', None)
 project_json['metadata'].pop('create_time', None)
 #updating values
-project_json['metadata']['owner_reference'].update('uuid', nutanix_calm_user_uuid)
-project_json['metadata']['owner_reference'].update('name', nutanix_calm_user_name)
-
+project_json['metadata']['owner_reference']['uuid'] = nutanix_calm_user_uuid
+project_json['metadata']['owner_reference']['name'] = nutanix_calm_user_upn
+for acp in project_json['spec']['access_control_policy_list']:
+    acp["operation"] = "ADD"
 payload = project_json
 #endregion
 
