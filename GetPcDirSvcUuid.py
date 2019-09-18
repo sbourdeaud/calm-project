@@ -17,6 +17,7 @@ nutanix_calm_user_upn = "@@{calm_username}@@"
 
 #region define variables
 directory_name = (nutanix_calm_user_upn.split("@"))[1]
+directory_uuid = ""
 #endregion
 
 # region prepare api call
@@ -73,7 +74,7 @@ else:
     print("Payload: {}".format(payload))
     exit(1)
 
-if directory_uuid is None:
+if directory_uuid == "":
     print("Could not find UUID for directory services with name {}".format(directory_name))
     exit(1)
 # endregion

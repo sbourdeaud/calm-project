@@ -4,8 +4,9 @@
 # *             stephane.bourdeaud@nutanix.com
 # * version:    2019/09/17
 # task_name:    GetAdUserUuid
-# description:  Returns the Prism Central object uuid of the Calm user.
-# output vars:  nutanix_calm_user_uuid
+# description:  Returns the Prism Central object uuid of the Calm user and its
+#               directory service.
+# output vars:  nutanix_calm_user_uuid, directory_uuid
 # endregion
 
 #region capture Calm variables
@@ -59,7 +60,9 @@ if resp.ok:
     for directory_user in json_resp['entities']:
         if nutanix_calm_user_upn == directory_user['status']['name']:
             nutanix_calm_user_uuid = directory_user['metadata']['uuid']
+            directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
             print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
+            print("directory_uuid={}".format(directory_uuid))
             exit(0)
     while json_resp['metadata']['length'] is length:
         payload = {
@@ -84,7 +87,9 @@ if resp.ok:
             for directory_user in json_resp['entities']:
                 if calm_user_upn == directory_user['status']['name']:
                     calm_user_uuid = directory_user['metadata']['uuid']
+                    directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
                     print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
+                    print("directory_uuid={}".format(directory_uuid))
                     exit(0)
         else:
             print("Request failed")

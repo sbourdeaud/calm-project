@@ -13,6 +13,7 @@ username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
 rand_num = "@@{calm_unique}@@"
 calm_user_upn = "@@{calm_username}@@"
+nutanix_calm_user_uuid = "@@{nutanix_calm_user_uuid}@@"
 ahv_network_uuid = "@@{ahv_network_uuid}@@"
 project_vlan_id = "@@{project_vlan_id}@@"
 project_size = "@@{project_size}@@"
@@ -57,7 +58,12 @@ headers = {
 payload = {
    "api_version":"3.1.0",
    "metadata":{
-      "kind":"project"
+      "kind":"project",
+      "owner_reference": {
+            "kind": "user",
+            "uuid": nutanix_calm_user_uuid,
+            "name": calm_user_upn
+        }
    },
    "spec":{
       "project_detail":{
