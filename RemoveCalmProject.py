@@ -13,10 +13,9 @@ username = "@@{pc.username}@@"
 username_secret = "@@{pc.secret}@@"
 #endregion
 
-
 #region prepare api call
 api_server_port = "9440"
-api_server_endpoint = "/api/nutanix/v3/projects_internal/{}".format(project_uuid )
+api_server_endpoint = "/api/nutanix/v3/projects_internal/{}".format(project_uuid)
 url = "https://{}:{}{}".format(
     api_server,
     api_server_port,
@@ -56,3 +55,4 @@ else:
     print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
     exit(1)
 # endregion
+
