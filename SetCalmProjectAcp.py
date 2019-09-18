@@ -12,7 +12,7 @@
 username = "@@{pc.username}@@"
 username_secret = "@@{pc.secret}@@"
 api_server = "@@{pc_ip}@@"
-calm_user_uuid = "@@{calm_user_uuid}@@"
+calm_user_uuid = "@@{nutanix_calm_user_uuid}@@"
 calm_user_upn = "@@{calm_username}@@"
 ad_group_name = "@@{ad_group_name}@@"
 ad_group_uuid = "@@{ad_group_uuid}@@"
@@ -61,7 +61,6 @@ else:
     #api call failed
     print("Request failed")
     print("Headers: {}".format(headers))
-    print("Payload: {}".format(json.dumps(payload)))
     print('Status code: {}'.format(resp.status_code))
     print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
     exit(1)

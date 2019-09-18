@@ -63,6 +63,7 @@ if resp.ok:
     json_resp = json.loads(resp.content)
     print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['length']))
     for project in json_resp['entities']:
+        print("Comparing {} with {}".format(nutanix_calm_user_uuid,project['metadata']['owner_reference']['uuid']))
         if nutanix_calm_user_uuid == project['metadata']['owner_reference']['uuid']:
             user_project_count = user_project_count + 1
     while json_resp['metadata']['length'] is length:
@@ -84,8 +85,8 @@ if resp.ok:
         if resp.ok:
             json_resp = json.loads(resp.content)
             print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['offset'] + json_resp['metadata']['length']))
-            #TODO: see if user matches here
             for project in json_resp['entities']:
+                print("Comparing {} with {}".format(nutanix_calm_user_uuid,project['metadata']['owner_reference']['uuid']))
                 if nutanix_calm_user_uuid == project['metadata']['owner_reference']['uuid']:
                     user_project_count = user_project_count + 1
         else:

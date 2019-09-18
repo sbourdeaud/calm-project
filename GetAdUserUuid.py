@@ -59,7 +59,7 @@ if resp.ok:
     for directory_user in json_resp['entities']:
         if nutanix_calm_user_upn == directory_user['status']['name']:
             nutanix_calm_user_uuid = directory_user['metadata']['uuid']
-            print("calm_user_uuid={}".format(nutanix_calm_user_uuid))
+            print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
             exit(0)
     while json_resp['metadata']['length'] is length:
         payload = {
@@ -84,7 +84,7 @@ if resp.ok:
             for directory_user in json_resp['entities']:
                 if calm_user_upn == directory_user['status']['name']:
                     calm_user_uuid = directory_user['metadata']['uuid']
-                    print("calm_user_uuid={}".format(calm_user_uuid))
+                    print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
                     exit(0)
         else:
             print("Request failed")
