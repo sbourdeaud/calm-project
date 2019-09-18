@@ -64,9 +64,10 @@ resp = urlreq(
 if resp.ok:
     json_resp = json.loads(resp.content)
     print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['length']))
+    #look at each group and determine if it matches our AD group for this project
     for directory_group in json_resp['entities']:
-        #print("Comparing {0} with {1}".format(ad_group_dn,directory_group['status']['resources']['directory_service_user_group']['distinguished_name']))
-        if ad_group_dn == directory_group['status']['resources']['directory_service_user_group']['distinguished_name']:
+        print("Comparing {0} with {1}".format(ad_group_dn.lower(),directory_group['status']['resources']['directory_service_user_group']['distinguished_name']))
+        if ad_group_dn.lower() == directory_group['status']['resources']['directory_service_user_group']['distinguished_name']:
             ad_group_uuid = directory_group['metadata']['uuid']
             print("ad_group_uuid={}".format(ad_group_uuid))
             exit(0)
@@ -90,7 +91,7 @@ if resp.ok:
             json_resp = json.loads(resp.content)
             print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['offset'] + json_resp['metadata']['length']))
             for directory_group in json_resp['entities']:
-                #print("Comparing {0} with {1}".format(ad_group_dn,directory_group['status']['resources']['directory_service_user_group']['distinguished_name']))
+                print("Comparing {0} with {1}".format(ad_group_dn,directory_group['status']['resources']['directory_service_user_group']['distinguished_name']))
                 if ad_group_dn == directory_group['status']['resources']['directory_service_user_group']['distinguished_name']:
                     ad_group_uuid = directory_group['metadata']['uuid']
                     print("ad_group_uuid={}".format(ad_group_uuid))
@@ -198,6 +199,7 @@ if resp.ok:
         if resp.ok:
             json_resp = json.loads(resp.content)
             print("Successfully created UUID for AD group {}".format(ad_group_name))
+            print(json_resp)
             ad_group_uuid = json_resp['name_uuid_list'][0][ad_group_name]
             print("ad_group_uuid={}".format(ad_group_uuid))
         else:
