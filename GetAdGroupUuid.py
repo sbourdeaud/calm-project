@@ -71,6 +71,7 @@ if resp.ok:
             ad_group_uuid = directory_group['metadata']['uuid']
             print("ad_group_uuid={}".format(ad_group_uuid))
             exit(0)
+    #adding processing if there is more than 1 page of results returned
     while json_resp['metadata']['length'] is length:
         payload = {
             "kind": "user",
