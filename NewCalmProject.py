@@ -122,7 +122,6 @@ if resp.ok:
    print json.dumps(json.loads(resp.content), indent=4)
    print "project_name={0}".format(json.loads(resp.content)['spec']['project_detail']['name'])
    print "project_uuid={0}".format(json.loads(resp.content)['metadata']['uuid'])
-
    exit(0)
 else:
     #api call failed
