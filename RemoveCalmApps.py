@@ -61,7 +61,7 @@ if resp.ok:
             print ("Deleting application {}".format(app['metadata']['name']))
             #region prepare api call (delete app)
             api_server_port = "9440"
-            api_server_endpoint = "/api/nutanix/v3/apps/{}".format(app['metadata']['project_reference']['uuid'])
+            api_server_endpoint = "/api/nutanix/v3/apps/{}".format(app['metadata']['uuid'])
             url = "https://{}:{}{}".format(
                 api_server,
                 api_server_port,
