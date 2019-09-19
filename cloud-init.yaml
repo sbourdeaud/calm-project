@@ -4,6 +4,11 @@ disable_root: false
 hostname: @@{name}@@
 fqdn: @@{name}@@.@@{domain}@@
 users:
+  - name: calm
+    ssh-authorized-keys:
+      - ${publicKey}
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    lock_passwd: true
   - name: root
     lock_passwd: false
 chpasswd:
