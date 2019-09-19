@@ -44,7 +44,7 @@
             </UserAccounts>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"</CommandLine>
+                    <CommandLine>cmd.exe /c netsh advfirewall firewall add rule dir=in name="WinRm" action=allow enable=yes profile=any protocol=TCP localport=5985</CommandLine>
                     <Description>Win RM port open</Description>
                     <Order>1</Order>
                     <RequiresUserInput>true</RequiresUserInput>
