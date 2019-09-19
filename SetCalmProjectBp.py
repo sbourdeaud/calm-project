@@ -112,31 +112,25 @@ if resp.ok:
             if resp.ok:
                 print "Marketplace item with uuid {} is published.".format(marketplace_item_uuid)
             else:
-                # print the content of the response (which should have the error message)
-                print("Request failed", json.dumps(
-                    json.loads(resp.content),
-                    indent=4
-                ))
+                print ("Request failed with status code {}".format(resp.status_code))
+                print ("Response content:")
+                print(json.dumps(json.loads(resp.content),indent=4))
                 print("Headers: {}".format(headers))
                 print("Payload: {}".format(payload))
                 exit(1)
             #endregion
         else:
-            # print the content of the response (which should have the error message)
-            print("Request failed", json.dumps(
-                json.loads(resp.content),
-                indent=4
-            ))
+            print ("Request failed with status code {}".format(resp.status_code))
+            print ("Response content:")
+            print(json.dumps(json.loads(resp.content),indent=4))
             print("Headers: {}".format(headers))
             print("Payload: {}".format(payload))
             exit(1)
         #endregion
 else:
-    # print the content of the response (which should have the error message)
-    print("Request failed", json.dumps(
-        json.loads(resp.content),
-        indent=4
-    ))
+    print ("Request failed with status code {}".format(resp.status_code))
+    print ("Response content:")
+    print(json.dumps(json.loads(resp.content),indent=4))
     print("Headers: {}".format(headers))
     print("Payload: {}".format(payload))
     exit(1)
