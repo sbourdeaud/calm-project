@@ -6,7 +6,7 @@ fqdn: @@{name}@@.@@{domain}@@
 users:
   - name: calm
     ssh-authorized-keys:
-      - ${publicKey}
+      - @@{public_key}@@
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     lock_passwd: true
   - name: root
