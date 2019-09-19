@@ -18,7 +18,7 @@ project_uuid = "@@{project_uuid}@@"
 #region prepare api call (get apps)
 api_server_port = "9440"
 api_server_endpoint = "/api/nutanix/v3/apps/list"
-length = 500
+length = 250
 url = "https://{}:{}{}".format(
     api_server,
     api_server_port,
