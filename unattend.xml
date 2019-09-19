@@ -6,7 +6,6 @@
             <RegisteredOrganization>@@{registered_org}@@</RegisteredOrganization>
             <RegisteredOwner>@@{registered_org}@@</RegisteredOwner>
             <TimeZone>Central European Standard Time</TimeZone>
-            <ProductKey>@@{product_key}@@</ProductKey>
         </component>
         <component name="Microsoft-Windows-TerminalServices-LocalSessionManager" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <fDenyTSConnections>false</fDenyTSConnections>
@@ -28,7 +27,7 @@
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>Nutanix/4u!</Value>
+                    <Value>@@{administrator.secret}@@</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
@@ -59,10 +58,10 @@
         </component>
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>fr-FR</InputLocale>
-            <SystemLocale>en-US</SystemLocale>
+            <SystemLocale>fr-BE</SystemLocale>
             <UILanguageFallback>en-us</UILanguageFallback>
             <UILanguage>en-US</UILanguage>
-            <UserLocale>fr-FR</UserLocale>
+            <UserLocale>fr-BE</UserLocale>
         </component>
     </settings>
 </unattend>
