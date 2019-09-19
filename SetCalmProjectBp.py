@@ -52,6 +52,7 @@ resp = urlreq(
 # endregion
 #region process the results (get marketplace items)
 if resp.ok:
+    print ("Request status code {} on {}".format(resp.status_code,url))
     json_resp = json.loads(resp.content)
     marketplace_items = json_resp['entities']
     #process each marketplace item
@@ -81,6 +82,7 @@ if resp.ok:
         #endregion
         #region process results (get marketplace information)
         if resp.ok:
+            print ("Request status code {} on {}".format(resp.status_code,url))
             json_resp = json.loads(resp.content)
             json_resp['metadata'].pop('owner_reference', None)
             json_resp.pop('status', None)
@@ -110,6 +112,7 @@ if resp.ok:
             #endregion
             #region process results (publish marketplace item to project)
             if resp.ok:
+                print ("Request status code {} on {}".format(resp.status_code,url))
                 print "Marketplace item with uuid {} is published.".format(marketplace_item_uuid)
             else:
                 print ("Request failed with status code {}".format(resp.status_code))
