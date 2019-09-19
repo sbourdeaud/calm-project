@@ -75,7 +75,6 @@ if resp.ok:
             auth='BASIC',
             user=username,
             passwd=username_secret,
-            params=json.dumps(payload),
             headers=headers,
             verify=False
         )
