@@ -1,0 +1,24 @@
+#cloud-config
+ssh_pwauth: True
+disable_root: false
+hostname: @@{name}@@
+fqdn: @@{name}@@.@@{domain}@@
+users:
+  - name: root
+    lock_passwd: false
+chpasswd:
+  list: |
+      root:$6$kXzrwcIC$u0r2nPBfgQ4sCNG.7GdAJ2qLfIOq57c8Vmre59zwEjPEJP5Ryw1BVocmDJ6LMKPRFN3msS0QSICNvJ8h2Ckre.
+  expire: false
+runcmd:
+  - [yum, install, -y, lvm2]
+  - printf 'o\nn\np\n\n\n\nt\n8e\nw' | fdisk /dev/sdb
+  - [pvcreate, /dev/sdb1]
+  - [vgcreate, vg0, /dev/sdb1]
+  - [lvcreate, -n, data, -l, 100%FREE, vg0]
+  - [mkfs.ext4, /dev/vg0/data]
+  - [mkdir, /data]
+  - [mount, /dev/vg0/data, /data]
+  - echo '/dev/mapper/vg0-data /data ext4 defaults 0 0' >>/etc/fstab
+  - [systemctl, mask, cloud-init-local, cloud-init, cloud-config, cloud-final]
+  - [eject]

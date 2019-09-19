@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ComputerName>@@{name}@@</ComputerName>
+            <RegisteredOrganization>@@{registered_org}@@</RegisteredOrganization>
+            <RegisteredOwner>@@{registered_org}@@</RegisteredOwner>
+            <TimeZone>Central European Standard Time</TimeZone>
+            <ProductKey>@@{product_key}@@</ProductKey>
+        </component>
+        <component name="Microsoft-Windows-TerminalServices-LocalSessionManager" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <fDenyTSConnections>false</fDenyTSConnections>
+        </component>
+        <component name="Microsoft-Windows-TerminalServices-RDP-WinStationExtensions" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <UserAuthentication>0</UserAuthentication>
+        </component>
+        <component name="Networking-MPSSVC-Svc" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <FirewallGroups>
+                <FirewallGroup wcm:action="add" wcm:keyValue="RemoteDesktop">
+                    <Active>true</Active>
+                    <Profile>all</Profile>
+                    <Group>@FirewallAPI.dll,-28752</Group>
+                </FirewallGroup>
+            </FirewallGroups>
+        </component>
+    </settings>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <UserAccounts>
+                <AdministratorPassword>
+                    <Value>Nutanix/4u!</Value>
+                    <PlainText>true</PlainText>
+                </AdministratorPassword>
+            </UserAccounts>
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"</CommandLine>
+                    <Description>Win RM port open</Description>
+                    <Order>1</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                   <CommandLine>powershell -Command "Enable-PSRemoting -SkipNetworkProfileCheck -Force"</CommandLine>
+                   <Description>Enable PS-Remoting</Description>
+                   <Order>2</Order>
+                   <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                   <CommandLine>powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"</CommandLine>
+                   <Description>Enable Remote-Signing</Description>
+                   <Order>3</Order>
+                   <RequiresUserInput>false</RequiresUserInput>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <SkipMachineOOBE>true</SkipMachineOOBE>
+            </OOBE>
+        </component>
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>fr-FR</InputLocale>
+            <SystemLocale>en-US</SystemLocale>
+            <UILanguageFallback>en-us</UILanguageFallback>
+            <UILanguage>en-US</UILanguage>
+            <UserLocale>fr-FR</UserLocale>
+        </component>
+    </settings>
+</unattend>
