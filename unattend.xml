@@ -30,18 +30,18 @@
                     <Value>@@{administrator_password}@@</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Password>
+                            <Value>(our local admin password)</Value>
+                            <PlainText>false</PlainText>
+                        </Password>
+                        <DisplayName>Calm</DisplayName>
+                        <Group>Administrators</Group>
+                        <Name>calm</Name>
+                    </LocalAccount>
+                </LocalAccounts>
             </UserAccounts>
-            <LocalAccounts>
-                <LocalAccount wcm:action="add">
-                    <Password>
-                        <Value>(our local admin password)</Value>
-                        <PlainText>false</PlainText>
-                    </Password>
-                    <DisplayName>Calm</DisplayName>
-                    <Group>Administrators</Group>
-                    <Name>calm</Name>
-                </LocalAccount>
-            </LocalAccounts>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"</CommandLine>
