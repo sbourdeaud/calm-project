@@ -42,6 +42,14 @@
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
+            <AutoLogon>
+                <Password>
+                    <Value>@@{windows_administrator.secret}@@</Value>
+                    <PlainText>true</PlainText>
+                </Password>
+                <Enabled>true</Enabled>
+                <Username>Administrator</Username>
+            </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c netsh advfirewall firewall add rule dir=in name="WinRm" action=allow enable=yes profile=any protocol=TCP localport=5985</CommandLine>
