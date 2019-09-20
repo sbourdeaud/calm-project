@@ -88,7 +88,41 @@ if resp.ok:
             #region process results (delete app)
             if resp.ok:
                 print ("Request status code {} on {}".format(resp.status_code,resp.request.url))
-                print ("Application {} was successfully deleted.".format(app['metadata']['name']))
+                print ("Application {} is deleting.".format(app['metadata']['name']))
+                app_state = app['status']['state']
+                app_uuid = app['metadata']['uuid']
+                while app_state != 'deleted':
+                    sleep(15)
+                    method = 'GET'
+                    url = "https://{}:9440/api/nutanix/v3/apps/{}".format(
+                        api_server,
+                        app_uuid
+                    )
+                    print("Making a {} API call to {}".format(method, url))
+                    resp = urlreq(
+                        url,
+                        verb=method,
+                        headers=headers,
+                        auth="BASIC",
+                        user=username,
+                        passwd=username_secret,
+                        verify=False
+                    )
+                    if resp.ok:
+                        json_resp = json.loads(resp.content)
+                        print("Status:", json_resp['status']['state'])
+                        if json_resp['status']['state'] is "error":
+                            print("App could not be deleted.")
+                            print ("Response content:")
+                            print(json.dumps(json.loads(resp.content),indent=4))
+                            exit(1)
+                        app_state = json_resp['status']['state']
+                    else:
+                        print ("Request failed with status code {}".format(resp.status_code))
+                        print ("Response content:")
+                        print(json.dumps(json.loads(resp.content),indent=4))
+                        print("Headers: {}".format(headers))
+                        exit(1)
             else:
                 print ("Request failed with status code {}".format(resp.status_code))
                 print ("Response content:")

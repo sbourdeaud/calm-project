@@ -44,11 +44,11 @@
             </UserAccounts>
             <AutoLogon>
                 <Password>
-                    <Value>@@{windows_administrator.secret}@@</Value>
+                    <Value>@@{calm.secret}@@</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>Administrator</Username>
+                <Username>Calm</Username>
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
