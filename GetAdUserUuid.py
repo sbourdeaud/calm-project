@@ -2,7 +2,7 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     Bogdan-Nicolae.MITU@ext.eeas.europa.eu,
 # *             stephane.bourdeaud@nutanix.com
-# * version:    2019/09/17
+# * version:    2019/10/18
 # task_name:    GetAdUserUuid
 # description:  Returns the Prism Central object uuid of the Calm user and its
 #               directory service.
@@ -32,10 +32,11 @@ headers = {
 }
 
 # Compose the json payload
+filter = "user_principal_name=={}".format(nutanix_calm_user_upn)
 payload = {
     "kind":"user",
-    "length":length,
-    "offset":0
+    "filter": filter,
+    "length":length
 }
 # endregion
 
@@ -58,46 +59,10 @@ if resp.ok:
     json_resp = json.loads(resp.content)
     print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['length']))
     for directory_user in json_resp['entities']:
-        if nutanix_calm_user_upn == directory_user['status']['name']:
-            nutanix_calm_user_uuid = directory_user['metadata']['uuid']
-            directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
-            print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
-            print("directory_uuid={}".format(directory_uuid))
-            exit(0)
-    while json_resp['metadata']['length'] is length:
-        payload = {
-            "kind": "user",
-            "length":length,
-            "offset": json_resp['metadata']['length'] + json_resp['metadata']['offset'] + 1
-        }
-        resp = urlreq(
-            url,
-            verb=method,
-            auth='BASIC',
-            user=username,
-            passwd=username_secret,
-            params=json.dumps(payload),
-            headers=headers,
-            verify=False
-        )
-        if resp.ok:
-            json_resp = json.loads(resp.content)
-            print("Processing results from {} to {}".format(json_resp['metadata']['offset'], json_resp['metadata']['offset'] + json_resp['metadata']['length']))
-            #TODO: see if user matches here
-            for directory_user in json_resp['entities']:
-                if nutanix_calm_user_upn == directory_user['status']['name']:
-                    nutanix_calm_user_uuid = directory_user['metadata']['uuid']
-                    directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
-                    print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
-                    print("directory_uuid={}".format(directory_uuid))
-                    exit(0)
-        else:
-            print("Request failed")
-            print("Headers: {}".format(headers))
-            print("Payload: {}".format(json.dumps(payload)))
-            print('Status code: {}'.format(resp.status_code))
-            print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
-            exit(1)
+        nutanix_calm_user_uuid = directory_user['metadata']['uuid']
+        directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
+        print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
+        print("directory_uuid={}".format(directory_uuid))
     exit(0)
 else:
     # print the content of the response (which should have the error message)
