@@ -1,6 +1,6 @@
 # region headers
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
-# * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
+# * author:     Bogdan-Nicolae.MITU@ext.eeas.europa.eu
 # *             stephane.bourdeaud@nutanix.com
 # * version:    2019/09/18
 # task_name:    Readme
