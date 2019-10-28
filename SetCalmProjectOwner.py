@@ -2,7 +2,7 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     MITU Bogdan Nicolae (EEAS-EXT) <Bogdan-Nicolae.MITU@ext.eeas.europa.eu>
 # *             stephane.bourdeaud@emeagso.lab
-# * version:    2019/09/18
+# * version:    2019/10/28
 # task_name:    SetCalmProjectOwner
 # description:  Given a Calm project UUID, updates the owner reference section 
 #               in the metadata.
@@ -84,30 +84,39 @@ for acp in project_json['spec']['access_control_policy_list']:
 payload = project_json
 #endregion
 
-#region make the api call (update project with acp)
-print("Making a {} API call to {}".format(method, url))
-resp = urlreq(
-    url,
-    verb=method,
-    auth='BASIC',
-    user=username,
-    passwd=username_secret,
-    params=json.dumps(payload),
-    headers=headers,
-    verify=False
-)
-#endregion
+#region make the api call
+retries = 1
+while True:
+    print("Making a {} API call to {}".format(method, url))
+    resp = urlreq(
+        url,
+        verb=method,
+        auth='BASIC',
+        user=username,
+        passwd=username_secret,
+        params=json.dumps(payload),
+        headers=headers,
+        verify=False
+    )
 
-#region process the results (update project with acp)
-if resp.ok:
-    print("Successfully updated the project owner reference to {}".format(nutanix_calm_user_upn))
-    exit(0)
-else:
-    #api call failed
-    print("Request failed")
-    print("Headers: {}".format(headers))
-    print("Payload: {}".format(json.dumps(payload)))
-    print('Status code: {}'.format(resp.status_code))
-    print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
-    exit(1)
+    if resp.ok:
+        print("Successfully updated the project owner reference to {}".format(nutanix_calm_user_upn))
+        exit(0)
+    elif resp.code == 409:
+        print("Prism Central is still updating this project. Retrying in 10 seconds...")
+        sleep(10)
+        retries += 1
+        if retries >= 6:
+            print("Prism Central is still updating this project and we have been waiting long enough. Exiting with error.")
+            exit(1)
+        else:
+            continue
+    else:
+        #api call failed
+        print("Request failed")
+        print("Headers: {}".format(headers))
+        print("Payload: {}".format(json.dumps(payload)))
+        print('Status code: {}'.format(resp.status_code))
+        print('Response: {}'.format(json.dumps(json.loads(resp.content), indent=4)))
+        exit(1)
 #endregion

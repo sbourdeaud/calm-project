@@ -2,7 +2,7 @@
 # escript-template v20190611 / stephane.bourdeaud@nutanix.com
 # * author:     Bogdan-Nicolae.MITU@ext.eeas.europa.eu,
 # *             stephane.bourdeaud@nutanix.com
-# * version:    2019/10/18
+# * version:    2019/10/28
 # task_name:    GetAdUserUuid
 # description:  Returns the Prism Central object uuid of the Calm user and its
 #               directory service.
@@ -61,6 +61,12 @@ if resp.ok:
     for directory_user in json_resp['entities']:
         nutanix_calm_user_uuid = directory_user['metadata']['uuid']
         directory_uuid = directory_user['spec']['resources']['directory_service_user']['directory_service_reference']['uuid']
+        if nutanix_calm_user_uuid is None:
+            print ("Could not find uuid for Active Directory user {}".format(nutanix_calm_user_upn))
+            exit (1)
+        if directory_uuid is None:
+            print ("Could not find uuid for the Active Directory service.")
+            exit (1)
         print("nutanix_calm_user_uuid={}".format(nutanix_calm_user_uuid))
         print("directory_uuid={}".format(directory_uuid))
     exit(0)
